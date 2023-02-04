@@ -1,7 +1,10 @@
+using App.Authorization;
 using App.Middlewares;
+using App.Requirement;
 using App.Services;
 using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 
@@ -39,7 +42,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 
-builder.Host.ConfigureServices((services) =>
+builder.Host.ConfigureServices(services =>
+{
     services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
@@ -54,8 +58,18 @@ builder.Host.ConfigureServices((services) =>
                 ValidateAudience = true,
                 ValidateIssuerSigningKey = true
             };
-        })
-);
+        });
+
+    services.AddAuthorization(options =>
+    {
+        options.AddPolicy("read:admin-messages", policy =>
+        {
+            policy.Requirements.Add(new RbacRequirement("read:admin-messages"));
+        });
+    });
+
+    services.AddSingleton<IAuthorizationHandler, RbacHandler>();
+});
 
 var app = builder.Build();
 

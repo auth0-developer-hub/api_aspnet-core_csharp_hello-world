@@ -21,6 +21,14 @@ class ErrorHandlerMiddleware
                     message = "Not Found"
                 });
             }
+            else if (context.Response is HttpResponse forbiddenResponse && forbiddenResponse.StatusCode == 403)
+            {
+                await forbiddenResponse.WriteAsJsonAsync(new {
+                    error = "insufficient_permissions",
+                    error_description = "Insufficient permissions to access resource",
+                    message = "Permission denied"
+                });
+            }
             else if (context.Response is HttpResponse unauthorizedResponse && unauthorizedResponse.StatusCode == 401)
             {
                 await unauthorizedResponse.WriteAsJsonAsync(
