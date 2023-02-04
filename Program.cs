@@ -1,6 +1,8 @@
 using App.Middlewares;
 using App.Services;
 using dotenv.net;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,12 +39,32 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 
+builder.Host.ConfigureServices((services) =>
+    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            var audience =
+                  builder.Configuration.GetValue<string>("AUTH0_AUDIENCE");
+
+            options.Authority =
+                  $"https://{builder.Configuration.GetValue<string>("AUTH0_DOMAIN")}/";
+            options.Audience = audience;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true
+            };
+        })
+);
+
 var app = builder.Build();
 
 var requiredVars =
     new string[] {
           "PORT",
           "CLIENT_ORIGIN_URL",
+          "AUTH0_DOMAIN",
+          "AUTH0_AUDIENCE",
     };
 
 foreach (var key in requiredVars)
@@ -62,5 +84,8 @@ app.UseErrorHandler();
 app.UseSecureHeaders();
 app.MapControllers();
 app.UseCors();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
