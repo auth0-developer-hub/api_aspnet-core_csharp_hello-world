@@ -21,6 +21,15 @@ class ErrorHandlerMiddleware
                     message = "Not Found"
                 });
             }
+            else if (context.Response is HttpResponse unauthorizedResponse && unauthorizedResponse.StatusCode == 401)
+            {
+                await unauthorizedResponse.WriteAsJsonAsync(
+                    new {
+                        message = context.Request.Headers.ContainsKey("Authorization")
+                                        ? "Bad credentials"
+                                        : "Requires authentication"
+                    });
+            }
         }
         catch (Exception ex)
         {

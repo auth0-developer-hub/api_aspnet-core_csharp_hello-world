@@ -1,5 +1,6 @@
 using App.Models;
 using App.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
@@ -22,12 +23,14 @@ public class MessagesController : ControllerBase
     }
 
     [HttpGet("protected")]
+    [Authorize]
     public ActionResult<Message> GetProtectedMessage()
     {
         return _messageService.GetProtectedMessage();
     }
 
     [HttpGet("admin")]
+    [Authorize]
     public ActionResult<Message> GetAdminMessage()
     {
         return _messageService.GetAdminMessage();
