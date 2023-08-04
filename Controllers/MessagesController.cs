@@ -30,7 +30,7 @@ public class MessagesController : ControllerBase
     }
 
     [HttpGet("admin")]
-    [Authorize]
+    [Authorize("read:admin-messages")]
     public ActionResult<Message> GetAdminMessage()
     {
         return _messageService.GetAdminMessage();

@@ -1,10 +1,10 @@
-# ASP.NET Core/C#: API Basic Access Control Code Sample
+# ASP.NET Core/C#: API Basic Role-Based Access Control (RBAC) Code Sample
 
-This C# code sample demonstrates **how to implement authorization** in ASP.NET Core API servers using Auth0.
+This C# code sample demonstrates **how to implement Role-Based Access Control (RBAC)** in ASP.NET Core API servers using Auth0.
 
 This code sample is part of the ["Auth0 Developer Resources"](https://developer.auth0.com/resources), a place where you can explore the authentication and authorization features of the Auth0 Identity Platform.
 
-Visit the ["ASP.NET Core/C# Code Sample: Authorization For Basic APIs"](https://developer.auth0.com/resources/code-samples/api/aspnet-core/basic-authorization) page for instructions on how to configure and run this code sample and how to integrate it with a Single-Page Application (SPA) of your choice.
+Visit the ["ASP.NET Core/C# Code Sample: Role-Based Access Control For Basic APIs"](https://developer.auth0.com/resources/code-samples/api/aspnet-core/basic-role-based-access-control) page for instructions on how to configure and run this code sample and how to integrate it with a Single-Page Application (SPA) of your choice.
 
 ## Why Use Auth0?
 
